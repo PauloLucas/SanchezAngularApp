@@ -1,0 +1,52 @@
+<header class="home-header">
+  <h1 class="title">Favoritos</h1>
+  <span class="spacer"></span>
+  <!-- <label class="search-wrap" for="search">
+    <span class="sr-only">Pesquisar</span>
+    <input id="search"
+           [formControl]="searchCtrl"
+           class="search-input"
+           type="text"
+           placeholder="Pesquisar" />
+  </label> -->
+</header>
+
+<section *ngIf="results().length; else emptyOrLoading" class="grid">
+  <article class="card" *ngFor="let c of results(); trackBy: trackById">
+
+    <!-- <button
+      type="button"
+      class="fav-btn"
+      (click)="toggleFavorite(c.id, c)"
+      [class.is-fav]="(isFav(c.id) | async)"
+      [attr.aria-pressed]="(isFav(c.id) | async) ? 'true' : 'false'">
+
+      <mat-icon *ngIf="!(isFav(c.id) | async)" fontIcon="heart_check"></mat-icon>
+      <mat-icon *ngIf="(isFav(c.id) | async)" fontIcon="favorite"></mat-icon>
+      
+    </button> -->
+
+    <img [src]="c.image" [alt]="c.name" />
+    <h2>{{ c.name }}</h2>
+    <p>{{ c.species }}</p>
+  </article>
+</section>
+
+<ng-template #emptyOrLoading>
+  <section class="empty-panel">
+    <div class="empty-inner" *ngIf="!loading(); else loadingTpl">
+      <h2>Parece que você ainda não tem favoritos</h2>
+      <p>Volte para a pagina inicial e escolha os melhores para você.</p>
+      <a href="/">Voltar ao inicío</a>
+    </div>
+  </section>
+</ng-template>
+
+<ng-template #loadingTpl>
+  <section class="empty-panel">
+    <div class="empty-inner">
+      <h2>Carregando…</h2>
+      <p>Aguarde um momento.</p>
+    </div>
+  </section>
+</ng-template>

@@ -1,0 +1,120 @@
+.toolbar {
+  background-color: #0a0a0a;
+  border-bottom: 1px solid #3d3d3d;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toolbar-logo {
+  height: 64px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  object-fit: contain;
+}
+
+.contador {
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #0a0a0a;
+}
+
+.spacer { flex: 1; }
+
+.segmented{
+  display: inline-flex;
+  align-items: center;
+  gap: 0px;
+  padding: 4px;
+  border-radius: 999px;
+  background: transparent;
+  border: none;
+}
+
+.seg-btn{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #cfcfcf;
+  // border-radius: 999px 0px 0px 999px;
+  // border-radius: 0px 999px 999px 0px;
+  font-weight: 700;
+  line-height: 1;
+  transition: background .15s ease, color .15s ease;
+}
+
+.seg-btn.um{
+  border-radius: 999px 0px 0px 999px;
+}
+.seg-btn.dois{
+  border-radius: 0px 999px 999px 0px;
+}
+
+.seg-btn.um:hover { 
+  background: #00b5cc; 
+
+  box-shadow: 0 0 5px #00b5cc,
+              0 0 20px #00b5cc,
+              0 0 50px #00b5cc,
+              0 0 100px #00b5cc;
+}
+
+.seg-btn.dois:hover { 
+  background: #a6d125; 
+
+  box-shadow: 0 0 5px #a6d125,
+              0 0 20px #a6d125,
+              0 0 50px #a6d125,
+              0 0 100px #a6d125;
+}
+
+/* divisor entre os dois botões */
+.seg-btn + .seg-btn::before{
+  content: "";
+  position: absolute;
+  left: -2px; top: 50%;
+  transform: translateY(-50%);
+  width: 1px; height: 20px;
+  background: transparent;
+}
+
+/* estado ativo */
+.seg-btn.active{
+  background: #fff;
+  color: #000;
+}
+.seg-btn.active mat-icon { color: #000; }
+
+/* ícone um pouco menor e alinhado */
+.seg-btn mat-icon{
+  font-size: 18px; width: 18px; height: 18px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #e0e0e0;
+}
+
+/* badge com aro branco */
+.badge{
+  margin-left: 6px;
+  min-width: 20px; height: 20px; padding: 0 6px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  color: #fff; background: transparent;
+}
+
+.seg-btn.active .badge{
+  border-color: #000;
+  color: #000;
+}
+
+.page {
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-inline: 16px;
+  padding-block: 16px;
+}

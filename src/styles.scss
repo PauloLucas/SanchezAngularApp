@@ -1,1 +1,50 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --font-title: "Creepster", system-ui;
+  --font-base: "Roboto", system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+}
+
+body { font-family: var(--font-base); }
+
+.title, h1.app-title {
+  font-family: var(--font-title);
+}
+
+
+.flex {
+  display: flex;
+  
+  &-center {
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #1f1f1f;
+  color: #fafafa;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scrollbar-gutter: stable;
+
+  scrollbar-width: none;
+  &::-webkit-scrollbar { width: 0; height: 0; }
+  
+}
+* {
+  box-sizing: border-box;
+
+  -ms-overflow-style: none;  /* IE/Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+*::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari, Edge */
+}
+
+
