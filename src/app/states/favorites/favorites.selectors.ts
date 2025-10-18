@@ -18,7 +18,6 @@ export const selectFavoritesCount = createSelector(
   ids => ids.length
 );
 
-// Factory selector: consulta “é favorito?” por id
 export const selectIsFavoriteById = (id: number) =>
   createSelector(selectFavoritesEntities, entities => !!entities[id]);
 

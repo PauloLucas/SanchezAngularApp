@@ -1,0 +1,21 @@
+<!-- <div class="tuner" (click)="onTrackClick($event)">
+  <div class="track">
+    <div class="ticks">
+      <ng-container *ngFor="let p of pages">
+        <span class="tick" [class.tick-lg]="(p % 5) === 0" [style.left.%]="tickLeft(p)"></span>
+        <span class="tick2" [class.tick-lg]="true" [style.left.%]="tickLeft(p)">{{p}}</span>
+      </ng-container>
+    </div>
+    <div class="needle" [style.left.%]="needleLeft()" (pointerdown)="startDrag($event)">
+      <div class="dot"></div>
+    </div>
+  </div>
+
+</div> -->
+
+<div class="stepper">
+  <button type="button" class="step-btn" (click)="step(-1)" [disabled]="page <= 1" aria-label="Página anterior">‹</button>
+  <span style="margin-top: 12px;">{{ page }} / </span>
+  <span style="margin-top: 12px;">{{ pages.length }} </span>
+  <button type="button" class="step-btn" (click)="step(1)"  [disabled]="page >= totalPages" aria-label="Próxima página">›</button>
+</div>

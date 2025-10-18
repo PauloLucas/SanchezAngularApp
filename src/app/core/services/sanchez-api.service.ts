@@ -16,13 +16,17 @@ export class SanchezApiService {
     return this.http.get<RetornoApiResponse>(`${this.baseUrl}/character`, { params });
   }
 
+  findCharacters(name : string): Observable<RetornoApiResponse> {
+    return this.http.get<RetornoApiResponse>(`${this.baseUrl}/character/?name=${name}`);
+  }
+
   getCharactersById(id: number):Observable<Character> {
     return this.http.get<Character>(`${this.baseUrl}/character/${id}`);
   }
 
   getCharactersFavorites(ids: number[]): Observable<Character[] | Character> {
     const path = ids.length === 1 ? `${ids[0]}` : `[${ids.join(',')}]`;
-    return this.http.get<Character[] | Character>(`${this.baseUrl}/character/${path}`);
+    return this.http.get<Character[]>(`${this.baseUrl}/character/${path}`);
   }
 
 }

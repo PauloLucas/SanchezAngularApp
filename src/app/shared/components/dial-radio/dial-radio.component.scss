@@ -1,0 +1,122 @@
+:host{ 
+  display:block;
+}
+.tuner{ 
+  position:relative;
+  margin:16px auto 8px;
+  padding:8px 4px;
+  user-select:none;
+}
+.track{ position:relative;
+  height:80px;
+  border-radius:6px;
+  background:linear-gradient(#1a1a1a,#151515);
+  border:1px solid #2a2a2a;
+  overflow:hidden; 
+}
+.track::before{ 
+  content:"";
+  position:absolute;
+  left:8px;
+  right:8px;
+  top:50%;
+  height:2px;
+  background:#ff6a00;
+  transform:translateY(-50%);
+  opacity:.9;
+}
+.ticks{ 
+  display: grid;
+  position:absolute;
+  inset:0; 
+}
+.tick{ 
+  margin: 0px 12px 0px 12px;
+  position:absolute;
+  top:50%;
+  width:2px;
+  height:10px;
+  background:#ff6a00;
+  transform:translate(-1px,-50%);
+  opacity:.9;
+}
+.tick2{ 
+  margin: 0px 12px;
+  font-size: xx-small;
+  position:absolute;
+  top:90%;
+  width:2px;
+  height:12px;
+  transform:translate(-1px,-50%);
+  opacity:.9;
+}
+.tick-lg{ 
+  height:27px;
+}
+.needle{ 
+  position:absolute;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:0;
+  height:0;
+  pointer-events:auto;
+  cursor:grab;
+}
+.needle:active{ 
+  cursor:grabbing;
+}
+.dot{ 
+  margin: 0px 10px;
+  margin-top: -20px;
+  width:4px;
+  height:34px;
+  border-radius:50%;
+  background:#00f07a;
+  border:2px solid #0c0c0c;
+  box-shadow:0 0 0 3px rgba(0,240,122,.25), 0 2px 6px rgba(0,0,0,.45);
+  transform:translateY(-1px);
+}
+.labels{ 
+  display:flex;
+  justify-content:space-between;
+  margin-top:6px;
+  color:#aaa;
+  font-size:12px;
+  padding:0 6px;
+}
+.stepper{ 
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  display:flex;
+  gap:8px;
+  z-index:40;
+}
+.step-btn{ 
+  width:44px;
+  height:44px;
+  border-radius:999px;
+  background:#fff;
+  color:#0f0f0f;
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow:0 2px 8px rgba(0,0,0,.35);
+  font-size:22px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:transform .12s, box-shadow .12s, opacity .12s; 
+}
+.step-btn:hover{ 
+  transform:scale(1.06); 
+}
+.step-btn:active{ 
+  transform:scale(0.98); 
+}
+.step-btn:disabled{ 
+  opacity:.35; 
+  cursor:default;
+  box-shadow:none; 
+}
+@media (max-width:768px){ .tuner{ margin-inline:8px; } .stepper{ right:8px; bottom:8px; } }
+  

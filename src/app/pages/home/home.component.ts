@@ -1,65 +1,65 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, signal } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { catchError, debounceTime, distinctUntilChanged, of, startWith, switchMap, take, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map, take, tap } from 'rxjs';
 import { SanchezApiService } from '../../core/services/sanchez-api.service';
 import { Character } from '../../core/models/sanchez.types';
 import { Store } from '@ngrx/store';
 import { selectFavoritesIds, selectIsFavoriteById } from '../../states/favorites/favorites.selectors';
 import { FavoritesActions } from '../../states/favorites/favorites.actions';
 import { MatIconModule } from '@angular/material/icon';
+import { DialRadioComponent } from '../../shared/components/dial-radio/dial-radio.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatIconModule],
+  imports: [CommonModule, ReactiveFormsModule, MatIconModule, DialRadioComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   @Input({ required: true }) character!: Character;
+  results: Character[] = [];
 
   private api = inject(SanchezApiService);
-  
   private store = inject(Store);
   isFav$ = this.store.select(selectIsFavoriteById(0));
 
   // testar inclusão dos favoritos
   favoritesIds$ = this.store.select(selectFavoritesIds);
 
+  totalPages: number = 0;
+  page: number = 0;
+
   searchCtrl = new FormControl<string>('', { nonNullable: true });
 
-  results = signal<Character[]>([]);
-  loading = signal(false);
-  errorMsg = signal<string | null>(null);
+  loading = false;
+  errorMsg: string | null = null;
 
-  constructor() {
+  constructor() {}
+  
+  ngOnInit(): void {
+    this.getCharacters();
+
+    this.page = 1;
+
     this.searchCtrl.valueChanges.pipe(
-      startWith(this.searchCtrl.value),
-      debounceTime(350),
+      map(v => (v ?? '').trim()),
+      filter(v => v !== ''),
+      debounceTime(1000),
       distinctUntilChanged(),
-      tap(() => { this.loading.set(true); this.errorMsg.set(null); }),
-      switchMap(name => 
-        this.api.getCharacters({ name: name || undefined, page: 1 }).pipe(
-          catchError(err => {
-            if (name && err?.status === 404) {
-              this.results.set([]);
-              this.errorMsg.set('Nada foi encontrado');
-            } else if (err) {
-              this.results.set([]);
-              this.errorMsg.set('Ocorreu um erro. Tente novamente.');
-            }
-            return of(null);
-          })
-        )
-      ),
-      tap(() => this.loading.set(false))
-    ).subscribe(resp => {
-      if (!resp) return;
-      this.results.set(resp.results);
-      // this.results.set([]);
-      this.errorMsg.set(null);
-    });
+      tap(() => {
+        this.loading = true;
+        this.errorMsg = null;
+        this.results = [];
+      }),
+    )
+    .subscribe(
+      value => {
+        this.searchCtrl.setValue(value);
+        this.findCharacters(1, value);
+      }
+    );
   }
 
   ngOnChanges(): void {
@@ -68,21 +68,45 @@ export class HomeComponent {
     }
   }
 
-  // toggleFavorite(ev: Event) {
-  //   ev.stopPropagation();
-  //   let isFavNow: boolean | undefined;
-  //   const sub = this.isFav$.subscribe(v => isFavNow = v);
-  //   sub.unsubscribe();
+  onDialChange(PageNum: number){
+    this.page = PageNum;
 
-  //   if (isFavNow) {
-  //     this.store.dispatch(FavoritesActions.remove({ id: this.character.id }));
-  //   } else {
-  //     this.store.dispatch(FavoritesActions.add({ character: this.character }));
-  //   }
-  // }
+    if (this.searchCtrl.getRawValue() !== '')
+      this.findCharacters(PageNum, this.searchCtrl.getRawValue());
+    else
+      this.getCharacters(PageNum);
+
+  }
+
+  findCharacters(pagina: number = 1, nome: string){
+    if(nome !== ''){
+      this.api.getCharacters({page: pagina, name: nome}).subscribe(
+        data => {
+          this.totalPages = data.info.pages;
+          this.results = data.results;
+        }
+      );
+      this.loading = false;
+    }
+  }
+
+  getCharacters(pagina: number = 1, nome: string = ''){
+    this.api.getCharacters({page: pagina, name: nome}).subscribe(
+      data => { 
+        this.totalPages = data.info.pages;
+        this.results = data.results;
+      }
+    );
+  }
+
+  clear(){
+    this.page = 1;
+    this.searchCtrl.setValue('');
+    this.getCharacters();
+  }
 
   isFav(id: number) {
-    return this.store.select(selectIsFavoriteById(id)); // Observable<boolean>
+    return this.store.select(selectIsFavoriteById(id));
   }
 
   toggleFavorite(id: number, character: Character) {
@@ -93,5 +117,4 @@ export class HomeComponent {
     });
   }
 
-  trackById = (_: number, c: any) => c.id;
 }

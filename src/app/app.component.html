@@ -18,7 +18,7 @@
        routerLinkActive="active">
       <mat-icon fontIcon="favorite"></mat-icon>
       <span>Favoritos</span>
-      <span class="badge" >{{ contFavorites }}</span>
+      <span class="badge" >{{ (contFavorites | async) ?? 0 }}</span>
     </a>
   </nav>
 
