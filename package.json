@@ -9,7 +9,7 @@
     "test": "ng test",
 
     "build-git": "ng build --configuration production --base-href /SanchezAngularApp/",
-    "deploy-git": "npx angular-cli-ghpages --dir=dist/sanchez-angular-app"
+    "deploy-git": "npx angular-cli-ghpages --dir=dist/sanchez-angular-app/browser"
   },
   "private": true,
   "dependencies": {
