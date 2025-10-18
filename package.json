@@ -6,7 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+
+    "build-git": "ng build --configuration production --base-href /SanchezAngularApp/",
+    "deploy-git": "npx angular-cli-ghpages --dir=dist/sanchez-angular-app"
   },
   "private": true,
   "dependencies": {
