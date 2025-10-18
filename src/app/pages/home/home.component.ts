@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter, map, take, tap } from 'rxjs';
 import { SanchezApiService } from '../../core/services/sanchez-api.service';
@@ -18,9 +18,7 @@ import { DialRadioComponent } from '../../shared/components/dial-radio/dial-radi
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
-  @Input({ required: true }) character!: Character;
   results: Character[] = [];
-
   private api = inject(SanchezApiService);
   private store = inject(Store);
   isFav$ = this.store.select(selectIsFavoriteById(0));
@@ -34,7 +32,6 @@ export class HomeComponent implements OnInit {
   searchCtrl = new FormControl<string>('', { nonNullable: true });
 
   loading = false;
-  errorMsg: string | null = null;
 
   constructor() {}
   
@@ -50,7 +47,6 @@ export class HomeComponent implements OnInit {
       distinctUntilChanged(),
       tap(() => {
         this.loading = true;
-        this.errorMsg = null;
         this.results = [];
       }),
     )
@@ -60,12 +56,6 @@ export class HomeComponent implements OnInit {
         this.findCharacters(1, value);
       }
     );
-  }
-
-  ngOnChanges(): void {
-    if (this.character?.id != null) {
-      this.isFav$ = this.store.select(selectIsFavoriteById(this.character.id));
-    }
   }
 
   onDialChange(PageNum: number){
@@ -78,7 +68,7 @@ export class HomeComponent implements OnInit {
 
   }
 
-  findCharacters(pagina: number = 1, nome: string){
+  findCharacters(pagina: number, nome: string){
     if(nome !== ''){
       this.api.getCharacters({page: pagina, name: nome}).subscribe(
         data => {
